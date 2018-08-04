@@ -1,9 +1,6 @@
 const CGMinerClient = require('cgminer-api')
 const CronJob = require('cron').CronJob
 const exec = require('child_process').exec
-require('dotenv').config()
-
-console.log(process.env.ROOT_PASSWORD)
 
 // Make a client to talk to a miner
 const cgminer = new CGMinerClient({
@@ -41,7 +38,7 @@ function restartIfNecessary () {
     if (response['SUMMARY'][0]['GHS 5s'] !== '0') {
       console.log('Restarting')
       // cgminer.sendCommand('restart', function (err, response) {
-      exec('ssh root@192.168.128.27 /sbin/reboot', function (err, stdout, stderr) {
+      exec('sshpass -v -f rootpass.txt ssh -o "StrictHostKeyChecking no" root@192.168.128.24 /sbin/reboot', function (err, stdout, stderr) {
         console.log(err, response)
         console.log('Restart complete')
       })
