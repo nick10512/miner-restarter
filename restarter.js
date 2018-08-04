@@ -1,6 +1,9 @@
 const CGMinerClient = require('cgminer-api')
 const CronJob = require('cron').CronJob
 const exec = require('child_process').exec
+require('dotenv').config()
+
+console.log(process.env.ROOT_PASSWORD)
 
 // Make a client to talk to a miner
 const cgminer = new CGMinerClient({
