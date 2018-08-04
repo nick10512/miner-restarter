@@ -12,10 +12,12 @@ require('dotenv').config()
 const ipaddresses = process.env.IP_ADDRESSES.split(',')
 miners = []
 for (ipaddress of ipaddresses) {
-  miners.push(new CGMinerClient({
+  var miner = new CGMinerClient({
     host: ipaddress,
     port: 4028
-  }))
+  })
+  miner.ipaddress = ipaddress
+  miners.push(miner)
 }
 
 // Create a job to run every 15 minutes
@@ -39,7 +41,7 @@ function restartIfNecessary (miner) {
       return
     }
 
-    console.log('Hashrate: ' + response['SUMMARY'][0]['GHS 5s'])
+    console.log('Hashrate at IP address ' + miner.ipaddress + ': ' + response['SUMMARY'][0]['GHS 5s'])
 
     // Restart if machine has 0 hashrate
     if (response['SUMMARY'][0]['GHS 5s'] === '0') {
